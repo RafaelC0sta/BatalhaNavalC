@@ -130,6 +130,8 @@ void jogada(int tabuleiro[10][10]) {
 	
 }
 
+//comentario de teste para o git
+
 int main() {
 	struct Player player1;
 	struct Player player2;
