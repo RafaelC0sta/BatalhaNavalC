@@ -19,7 +19,6 @@ int op;
 int tabuleiroP1[10][10];
 int tabuleiroP2[10][10];
 
-//comentario para testar o git e etc
 
 int tabuleiroAtaqueP1[10][10];
 int tabuleiroAtaqueP2[10][10];
