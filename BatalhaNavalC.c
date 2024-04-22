@@ -239,8 +239,9 @@ int main() {
 		menuInicial();
 		switch (op) {
 			case 1:
-				printf("Instrucoes");
-				Sleep(3000);
+				system("cls");
+				printf("Bem-vindo ao jogo da Batalha Naval!\nEsta prestes a embarcar numa batalha emocionante no mar.\nO objetivo deste jogo e destruir todas as embarcacoes do seu inimigo!");
+				Sleep(5000);
 				system("cls");
 				break;
 			case 2:
