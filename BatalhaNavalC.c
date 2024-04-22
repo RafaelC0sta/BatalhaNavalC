@@ -270,6 +270,11 @@ int main() {
                 	tabuleiroBarcos(tabuleiroAtaqueP2, player2.id);
                 	jogada(tabuleiroP2, player1.id, tabuleiroAtaqueP2);
                 	system("cls");
+                	if (checaVencedor(tabuleiroP2)) {
+                        printf("Player %d venceu!\n", player1.id);
+                        MessageBeep(MB_ICONWARNING);
+                        break;
+                    }
                 	
                 	jogador2();
                 	
@@ -277,15 +282,14 @@ int main() {
                     tabuleiroBarcos(tabuleiroAtaqueP1, player1.id);
                     jogada(tabuleiroP1, player2.id, tabuleiroAtaqueP1);
                     system("cls");
-                    
-                    
                     if (checaVencedor(tabuleiroP1)) {
                         printf("Player %d venceu!\n", player2.id);
-                        break;
-                    } else if (checaVencedor(tabuleiroP2)) {
-                        printf("Player %d venceu!\n", player1.id);
+                        MessageBeep(MB_ICONWARNING);
                         break;
                     }
+                    
+                    
+                    
                 }
 
 
