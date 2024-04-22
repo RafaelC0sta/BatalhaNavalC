@@ -1,8 +1,16 @@
+/*
+	Projeto realizado por: Rafael Costa
+	Turma: PIPL0922
+	N√∫mero: T0123399
+	UFCD: 0809 - Programa√ß√£o em C/C++ - fundamentos
+*/
+
 #include<stdio.h>
 #include<windows.h>
 #include<ctype.h>
 #include<conio.h>
 
+//Enum para especificar as constantes dos estados dos navios
 enum Estados {
 	VAZIO,
 	NAVIO,
@@ -10,11 +18,15 @@ enum Estados {
 	AGUA
 };
 
+
 struct Player {
 	int id;
 };
 
+//Inicializa√ß√£o das vari√°veis globais
 int op;
+int coluna;
+char linha;
 
 int tabuleiroP1[10][10];
 int tabuleiroP2[10][10];
@@ -37,13 +49,19 @@ void inicializarTabuleiro(int tabuleiro[10][10]) {
 //Funcao para apresentar o tabuleiro de cada player
 void tabuleiroBarcos(int tabuleiro[10][10], int playerId) {
     printf("\t\t    Tabuleiro de Barcos do Player %d\n\n", playerId);
+    
     printf("\t");
+    
     for (int l=1; l<=10; l++) {
         printf("  %d ", l);
     }
+    
     printf("\n---------------------------------------------------\n");
+    
     for (int i=0; i<10; i++) {
+    	
         printf("%c\t", letra+i);
+        
         for (int j=0; j<10; j++) {
             char c;
             switch (tabuleiro[i][j]) {
@@ -83,18 +101,17 @@ void menuInicial() {
 
 //Funcao para colocar os barcos no tabuleiro
 void porBarcos(int tabuleiro[10][10]) {
-	char linha;
-	int coluna, barcos=6;
+	int barcos=6;
 
 	do {
 	    coluna = 0;
-		printf("Onde que colocar os barcos (linha e coluna): ");
+		printf("Onde quer colocar os barcos (linha e coluna): ");
 		getchar();
         linha = getche();
 		scanf("%d", &coluna);
 
 		if (isdigit(linha) || isalpha(coluna)) {
-            printf("Errado!\n");
+            printf("Nao e possivel colocar o barco nesta posicao!\n");
 		} else {
             if (islower(linha)) {
                 linha = toupper(linha);
@@ -103,7 +120,7 @@ void porBarcos(int tabuleiro[10][10]) {
             int linhaIndex = linha - 'A';
             int colunaIndex = coluna - 1;
 
-            //Vai verificar se a posicao È valida
+            //Vai verificar se a posicao √© valida
             if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
                 printf("Nao e possivel colocar o barco nesta posicao!\n");
             } else if (tabuleiro[linhaIndex][colunaIndex] != VAZIO) {
@@ -117,9 +134,11 @@ void porBarcos(int tabuleiro[10][10]) {
 	} while (barcos != 0);
 }
 
-//Verifica se j· existe algo nessa posiÁ„o do tabuleiro
+//Verifica se j√° existe algo nessa posi√ß√£o do tabuleiro
 void verificarJogada(int tabuleiro[10][10], int linhaIndex, int colunaIndex, int tabuleiroAtaque[10][10]) {
-    if (tabuleiro[linhaIndex][colunaIndex] == NAVIO) {
+    if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
+        printf("Jogada fora do tabuleiro.\n");
+    } else if (tabuleiro[linhaIndex][colunaIndex] == NAVIO) {
         printf("Acertou um navio!\n");
         tabuleiro[linhaIndex][colunaIndex] = ATINGIDO;
         tabuleiroAtaque[linhaIndex][colunaIndex] = ATINGIDO;
@@ -134,41 +153,73 @@ void verificarJogada(int tabuleiro[10][10], int linhaIndex, int colunaIndex, int
 
 //Funcao para realizar a jogada do jogador
 void jogada(int tabuleiro[10][10], int playerId, int tabuleiroAtaque[10][10]) {
-    char linha;
-    int coluna;
+    coluna = 0;
+	printf("Jogada do Player %d (linha e coluna): ", playerId);
+	getchar();
+    linha = getche();
+	scanf("%d", &coluna);
+	
+	if (isdigit(linha) || isalpha(coluna)) {
+        printf("Nao e possivel colocar o barco nesta posicao!\n");
+        Sleep(1500);
+	} else {
+        if (islower(linha)) {
+            linha = toupper(linha);
+        }
 
-    printf("Jogada do Player %d (linha e coluna): ", playerId);
-    getchar();
-    scanf("%c%d", &linha, &coluna);
-
-    if (islower(linha)) {
-        linha = toupper(linha);
-    }
-
-    int linhaIndex = linha - 'A';
-    int colunaIndex = coluna-1;
-
-    if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
-        printf("Jogada fora do tabuleiro.\n");
-        return;
-    }
-
-    verificarJogada(tabuleiro, linhaIndex, colunaIndex, tabuleiroAtaque);
-    Sleep(3000);
+        int linhaIndex = linha - 'A';
+        int colunaIndex = coluna - 1;
+        
+        verificarJogada(tabuleiro, linhaIndex, colunaIndex, tabuleiroAtaque);
+    	Sleep(3000);
+	}
 }
 
 int checaVencedor(int tabuleiro[10][10]) {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             if (tabuleiro[i][j] == NAVIO) {
-                // Se ainda houver um navio n„o atingido, o jogo continua
+                // Se ainda houver um navio n√£o atingido, o jogo continua
                 return 0;
             }
         }
     }
-    // Se n„o houver mais navios n„o atingidos, o jogador perdeu
+    // Se n√£o houver mais navios n√£o atingidos, o jogador perdeu
     return 1;
 }
+
+void jogador1() {
+	system("cls");
+	printf("\n\n\n\n\n");
+	printf("\t\t\t\t   ___                       _              __  \n");
+	printf("\t\t\t\t  |_  |                     | |            /  | \n");
+	printf("\t\t\t\t    | | ___   __ _  __ _  __| | ___  _ __  `| | \n");
+	printf("\t\t\t\t    | |/ _ \\ / _` |/ _` |/ _` |/ _ \\| '__|  | | \n");
+	printf("\t\t\t\t/\\__/ / (_) | (_| | (_| | (_| | (_) | |    _| |_\n");
+	printf("\t\t\t\t\\____/ \\___/ \\__, |\\__,_|\\__,_|\\___/|_|    \\___/\n");
+	printf("\t\t\t\t              __/ |                             \n");
+	printf("\t\t\t\t             |___/                              \n");
+	
+	Sleep(2000);
+	system("cls");
+}
+
+void jogador2() {
+	system("cls");
+	printf("\n\n\n\n\n");
+	printf("\t\t\t\t   ___                       _              _____ \n");
+	printf("\t\t\t\t  |_  |                     | |            / __  \\\n");
+	printf("\t\t\t\t    | | ___   __ _  __ _  __| | ___  _ __  `' / /'\n");
+	printf("\t\t\t\t    | |/ _ \\ / _` |/ _` |/ _` |/ _ \\| '__|   / /  \n");
+	printf("\t\t\t\t/\\__/ / (_) | (_| | (_| | (_| | (_) | |    ./ /___\n");
+	printf("\t\t\t\t\\____/ \\___/ \\__, |\\__,_|\\__,_|\\___/|_|    \\_____/\n");
+	printf("\t\t\t\t              __/ |                               \n");
+	printf("\t\t\t\t             |___/                                \n");
+	
+	Sleep(2000);
+	system("cls");
+}
+
 
 
 int main() {
@@ -194,31 +245,38 @@ int main() {
 				break;
 			case 2:
 				system("cls");
-
+				jogador1();
                 tabuleiroBarcos(tabuleiroP1, player1.id);
                 porBarcos(tabuleiroP1);
                 system("cls");
-
+	
+				jogador2();
                 tabuleiroBarcos(tabuleiroP2, player2.id);
                 porBarcos(tabuleiroP2);
                 system("cls");
 
                 while (1) {
+                	jogador1();
+                	
+                	tabuleiroBarcos(tabuleiroP1, player1.id);
+                	tabuleiroBarcos(tabuleiroAtaqueP2, player2.id);
+                	jogada(tabuleiroP2, player1.id, tabuleiroAtaqueP2);
+                	system("cls");
+                	
+                	jogador2();
+                	
                     tabuleiroBarcos(tabuleiroP2, player2.id);
                     tabuleiroBarcos(tabuleiroAtaqueP1, player1.id);
                     jogada(tabuleiroP1, player2.id, tabuleiroAtaqueP1);
                     system("cls");
-                    tabuleiroBarcos(tabuleiroP1, player1.id);
+                    
+//                    tabuleiroBarcos(tabuleiroP1, player1.id);
+                    
+                    
                     if (checaVencedor(tabuleiroP1)) {
                         printf("Player %d venceu!\n", player2.id);
                         break;
-                    }
-
-                    tabuleiroBarcos(tabuleiroAtaqueP2, player2.id);
-                    jogada(tabuleiroP2, player1.id, tabuleiroAtaqueP2);
-                    system("cls");
-                    tabuleiroBarcos(tabuleiroP2, player2.id);
-                    if (checaVencedor(tabuleiroP2)) {
+                    } else if (checaVencedor(tabuleiroP2)) {
                         printf("Player %d venceu!\n", player1.id);
                         break;
                     }
@@ -234,6 +292,8 @@ int main() {
 				break;
 			default:
 				printf("Opcao invalida!");
+				Sleep(1000);
+				system("cls");
 				break;
 		}
 	} while (op != 3);
