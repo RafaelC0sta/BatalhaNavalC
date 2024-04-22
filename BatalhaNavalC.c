@@ -288,9 +288,7 @@ int main() {
                         break;
                     }
                     
-                    
-                    
-                }
+            	}
 
 
                 Sleep(5000);
