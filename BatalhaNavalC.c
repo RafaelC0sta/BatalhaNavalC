@@ -112,6 +112,8 @@ void porBarcos(int tabuleiro[10][10]) {
 
 		if (isdigit(linha) || isalpha(coluna)) {
             printf("Nao e possivel colocar o barco nesta posicao!\n");
+            MessageBeep(MB_ICONINFORMATION);
+            // o MessageBeep serve para colocar um som do windows, o MB_ICONINFORMATION e uma variavel de som do proprio windows
 		} else {
             if (islower(linha)) {
                 linha = toupper(linha);
@@ -123,6 +125,7 @@ void porBarcos(int tabuleiro[10][10]) {
             //Vai verificar se a posicao é valida
             if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
                 printf("Nao e possivel colocar o barco nesta posicao!\n");
+                MessageBeep(MB_ICONINFORMATION);
             } else if (tabuleiro[linhaIndex][colunaIndex] != VAZIO) {
                 printf("Ja existe um barco ai\n");
             } else {
@@ -138,17 +141,21 @@ void porBarcos(int tabuleiro[10][10]) {
 void verificarJogada(int tabuleiro[10][10], int linhaIndex, int colunaIndex, int tabuleiroAtaque[10][10]) {
     if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
         printf("Jogada fora do tabuleiro.\n");
+        MessageBeep(MB_ICONINFORMATION);
     } else if (tabuleiro[linhaIndex][colunaIndex] == NAVIO) {
-        printf("Acertou um navio!\n");
+        printf("\033[0;31mAcertou um navio!\n");
         tabuleiro[linhaIndex][colunaIndex] = ATINGIDO;
         tabuleiroAtaque[linhaIndex][colunaIndex] = ATINGIDO;
     } else if (tabuleiro[linhaIndex][colunaIndex] == VAZIO) {
-        printf("Agua!\n");
+        printf("\033[0;34mAgua!\n");
         tabuleiro[linhaIndex][colunaIndex] = AGUA;
         tabuleiroAtaque[linhaIndex][colunaIndex] = AGUA;
     } else if (tabuleiro[linhaIndex][colunaIndex] == ATINGIDO || tabuleiro[linhaIndex][colunaIndex] == AGUA) {
-        printf("Jogada Repetida.\n");
+        printf("\033[0;33mJogada Repetida.\n");
     }
+    
+    //reseta a cor do terminal
+    printf("\033[0m");
 }
 
 //Funcao para realizar a jogada do jogador
@@ -161,6 +168,7 @@ void jogada(int tabuleiro[10][10], int playerId, int tabuleiroAtaque[10][10]) {
 	
 	if (isdigit(linha) || isalpha(coluna)) {
         printf("Nao e possivel colocar o barco nesta posicao!\n");
+        MessageBeep(MB_ICONINFORMATION);
         Sleep(1500);
 	} else {
         if (islower(linha)) {
@@ -221,7 +229,6 @@ void jogador2() {
 }
 
 
-
 int main() {
 	struct Player player1;
 	struct Player player2;
@@ -271,8 +278,6 @@ int main() {
                     jogada(tabuleiroP1, player2.id, tabuleiroAtaqueP1);
                     system("cls");
                     
-//                    tabuleiroBarcos(tabuleiroP1, player1.id);
-                    
                     
                     if (checaVencedor(tabuleiroP1)) {
                         printf("Player %d venceu!\n", player2.id);
@@ -284,7 +289,7 @@ int main() {
                 }
 
 
-                Sleep(6000);
+                Sleep(5000);
                 system("cls");
 				break;
 			case 3:
