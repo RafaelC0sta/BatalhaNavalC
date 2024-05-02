@@ -5,13 +5,6 @@
 	UFCD: 0809 - Programação em C/C++ - fundamentos
 */
 
-
-// meter a cena de cada player ter um nome e aparecer na splash art de mudar de jogador
-// tipo:
-// Jogador 1
-// *Nome do Jogador*
-
-
 #include<stdio.h>
 #include<windows.h>
 #include<ctype.h>
