@@ -19,7 +19,6 @@ enum Estados {
 	AGUA
 };
 
-
 struct Player {
 	int id;
 	int vitorias;
