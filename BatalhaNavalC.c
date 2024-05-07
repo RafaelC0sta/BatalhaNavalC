@@ -18,7 +18,7 @@ enum Estados {
 	ATINGIDO,
 	AGUA
 };
-
+	
 struct Player {
 	int id;
 	int vitorias;
@@ -108,12 +108,42 @@ void porBarcos(int tabuleiro[10][10]) {
 	int barcos=6;
 
 	do {
+		int direcao;
 	    coluna = 0;
-		printf("Onde quer colocar os barcos (linha e coluna): ");
-		getchar();
-        linha = getche();
-		scanf("%d", &coluna);
-
+	    
+	    switch (barcos) {
+	    	case 1:
+	    		printf("Onde quer colocar o barco de 5 posicoes (linha e coluna): ");
+	    		getchar();
+		    	linha = getchar();
+				scanf("%d", &coluna);
+				printf("Que direcao quer colocar (Horizontal: 1 | Vertical: 2): ");
+				scanf("%d", &direcao);
+				break;
+			case 2:
+				printf("Onde quer colocar o barco de 3 posicoes (linha e coluna): ");
+		    	getchar();
+		    	linha = getchar();
+				scanf("%d", &coluna);
+				printf("Que direcao quer colocar (Horizontal: 1 | Vertical: 2): ");
+				scanf("%d", &direcao);
+				break;
+			case 3:
+				printf("Onde quer colocar o barco de 2 posicoes (linha e coluna): ");
+		    	getchar();
+		    	linha = getchar();
+				scanf("%d", &coluna);
+				printf("Que direcao quer colocar (Horizontal: 1 | Vertical: 2): ");
+				scanf("%d", &direcao);
+				break;
+			default:
+				printf("Onde quer colocar os barcos (linha e coluna): ");
+		    	getchar();
+		    	linha = getchar();
+				scanf("%d", &coluna);
+				break;
+		}
+		
 		if (isdigit(linha) || isalpha(coluna)) {
             printf("Nao e possivel colocar o barco nesta posicao!\n");
             MessageBeep(MB_ICONINFORMATION);
@@ -134,10 +164,75 @@ void porBarcos(int tabuleiro[10][10]) {
                 printf("Ja existe um barco ai\n");
             } else {
                 tabuleiro[linhaIndex][colunaIndex] = NAVIO;
+                
+                switch(barcos) {
+                	case 1:
+                		// barco de 5 posicoes
+	                	if (direcao == 1) { //Horizontal
+	                		for (int i=0; i<5; i++) {
+	                			if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex+5 >= 10) {
+	                				tabuleiro[linhaIndex][colunaIndex-i] = NAVIO;
+	            				} else {
+	            					tabuleiro[linhaIndex][colunaIndex+i] = NAVIO;
+								}
+							}
+						} else if (direcao == 2) { // Vertical
+							for (int i=0; i<5; i++) {
+								if (linhaIndex < 0 || linhaIndex+5 >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
+	                				tabuleiro[linhaIndex-i][colunaIndex] = NAVIO;
+	            				} else {
+	            					tabuleiro[linhaIndex+i][colunaIndex] = NAVIO;
+								}
+							}
+						}
+						break;
+					case 2:
+						//barco de 3 posicoes
+						if (direcao == 1) { //Horizontal
+	                		for (int i=0; i<3; i++) {
+		                		if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex+3 >= 10) {
+	                				tabuleiro[linhaIndex][colunaIndex-i] = NAVIO;
+	            				} else {
+	            					tabuleiro[linhaIndex][colunaIndex+i] = NAVIO;
+								}
+							}
+						} else if (direcao == 2) { // Vertical
+							for (int i=0; i<3; i++) {
+		                		if (linhaIndex < 0 || linhaIndex+3 >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
+	                				tabuleiro[linhaIndex-i][colunaIndex] = NAVIO;
+	            				} else {
+	            					tabuleiro[linhaIndex+i][colunaIndex] = NAVIO;
+								}
+							}
+						}
+						break;
+					case 3:
+						//barco de 2 posicoes
+						if (direcao == 1) { //Horizontal
+	                		for (int i=0; i<2; i++) {
+		                		if (linhaIndex < 0 || linhaIndex >= 10 || colunaIndex < 0 || colunaIndex+2 >= 10) {
+	                				tabuleiro[linhaIndex][colunaIndex-i] = NAVIO;
+	            				} else {
+	            					tabuleiro[linhaIndex][colunaIndex+i] = NAVIO;
+								}
+							}
+						} else if (direcao == 2) { // Vertical
+							for (int i=0; i<2; i++) {
+		                		if (linhaIndex+i < 0 || linhaIndex+2 >= 10 || colunaIndex < 0 || colunaIndex >= 10) {
+	                				tabuleiro[linhaIndex-i][colunaIndex] = NAVIO;
+	            				} else {
+	            					tabuleiro[linhaIndex+i][colunaIndex] = NAVIO;
+								}
+							}
+						}
+						break;
+					default:
+						;
+						break;
+				}
                 barcos--;
-            }
+            }   
 		}
-
 	} while (barcos != 0);
 }
 
@@ -167,7 +262,7 @@ void jogada(int tabuleiro[10][10], int playerId, int tabuleiroAtaque[10][10]) {
     coluna = 0;
 	printf("Jogada do Player %d (linha e coluna): ", playerId);
 	getchar();
-    linha = getche();
+    linha = getchar();
 	scanf("%d", &coluna);
 	
 	if (isdigit(linha) || isalpha(coluna)) {
@@ -258,7 +353,7 @@ int main() {
 				printf("Bem-vindo ao jogo da Batalha Naval!\nEsta prestes a embarcar numa batalha emocionante no mar.\nO objetivo deste jogo e destruir todas as embarcacoes do seu inimigo!");
 				printf("\nLegenda:\n");
 				printf("Vazio: O\nNavio: #\nAgua: ~\nNavio Atingido: X");
-				Sleep(6000);
+				Sleep(8000);
 				system("cls");
 				break;
 			case 2:
